@@ -32,27 +32,32 @@ app.use(cors());
 
 // static directory path
 
-app.use(express.static(path.join(__dirname,'dist/')))
+app.use(express.static(path.join(__dirname, "dist/")));
 
 // Base route
 
-app.get('/',(req, res) => {
-    res.sendFile(path.join(__dirname,'dist/index.html'))
-})
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist/index.html"));
+});
 
 // API route
-app.use('/api',bookRoute);
+app.use("/api", bookRoute);
 
 // port
 const port = process.env.PORT || 8000;
 
-app.listen(port, ()=>{
-    console.log('listening on port '+port);
-})
+app.listen(port, () => {
+  console.log("listening on port " + port);
+});
 
 // 404 Handler
-app.use(function(err,req, res, next) {
-    console.err(ree.message);
-    if(!err.statusCode) err.statusCode=500;
-    res.status(err.statusCode).send(err.message);
-})
+// app.use((req, res, next) => {
+//   next(createError(404));
+// });
+
+// error handler
+app.use(function (err, req, res, next) {
+  console.error(err.message);
+  if (!err.statusCode) err.statusCode = 500;
+  res.status(err.statusCode).send(err.message);
+});

@@ -64,4 +64,62 @@ bookRoute.route('/delete-book/:id').delete((req,res,next)=>{
     })
 })
 
+// Post method version
+bookRoute.route('/apiGetAllBooks').post((req,res)=>{
+    Book.find((error,data)=>{
+        if(error){
+            return next(error);
+        }else{
+            res.json(data)
+        }
+    })
+})
+
+bookRoute.route('/apiGetBook').post((req,res)=>{
+    Book.findById(req.body.id,(error,data)=>{
+        if(error){
+            return next(error);
+        }else{
+            res.json(data)
+        }
+    })
+})
+
+bookRoute.route('/apiInsertBook').post((req,res,next) => {
+    Book.create(req.body,(error,data)=>{
+        if(error){
+            return next(error);
+        }else{
+            // res.json(data)
+            res.send('insert book successfully!')
+        }
+    })
+})
+
+bookRoute.route('/apiUpdateBook').post((req, res, next) => {
+    Book.findByIdAndUpdate(req.body.id, {
+    $set: req.body
+  }, (error, data) => {
+    if (error) {
+      return next(error);
+      console.log(error)
+    } else {
+    //   res.json(data)
+      res.send('Book updated successfully!')
+    //   console.log('Book updated successfully!')
+    }
+  })
+})
+
+bookRoute.route('/apiDeleteBook').post((req,res,next)=>{
+    Book.findByIdAndRemove(req.body.id,(error,data)=>{
+        if(error){
+            return next(error);
+        }else{
+            res.send('delete book successfully!')
+            // res.status(200).json({msg:data});
+        }
+    })
+})
+
 module.exports = bookRoute;
